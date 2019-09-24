@@ -1,0 +1,16 @@
+#!/bin/bash
+
+file=../../.user
+submit() {
+	[ -f "$file" ] || setup
+	user=$(head -1 $file)
+	zip -qr $user .
+	
+}
+
+setup() {
+	read -p "enter username: " user
+	echo $user > $file
+}
+
+submit

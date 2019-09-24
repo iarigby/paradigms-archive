@@ -1,0 +1,9 @@
+test:
+	@echo todo
+
+submit: clean
+	@sh ../../submit
+
+change_user:
+	rm ../../.user
+	@echo "user will be asked during next submission"
