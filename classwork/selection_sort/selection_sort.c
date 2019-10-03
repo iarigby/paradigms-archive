@@ -46,7 +46,7 @@ int dblcmp(void *vp1, void *vp2)
     double epsilon = 0.00001;
     double a = *((double *)vp1);
     double b = *((double *)vp2);
-    if ((a - b < epsilon) || (b - a < epsilon))
+    if ((a - b < epsilon) && (b - a < epsilon))
     // if (a == b)
         return 0;
     return a < b ? -1 : 1;
