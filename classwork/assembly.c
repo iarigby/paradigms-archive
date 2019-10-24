@@ -1,4 +1,3 @@
-
 {
   int i;
   float f;
@@ -20,6 +19,7 @@
     ch = 'a';
   i = 25;
 }
+JMP
 {
   char ch;
   int i;
@@ -44,10 +44,6 @@ struct binky {
   x.f = x.a;
 }
 {
-  int arr[20];
-  arr[25] = 7;
-}
-{
   int i;
   struct binky arr[50];
   a[i].f = i;
@@ -61,4 +57,47 @@ struct binky {
   int *s; i;
   s = &i;
   s++;
+}
+
+/**
+    examples on pointers missing, see handout 13
+ */
+
+static int Add(int one, int two)
+{
+int temp, sum;
+sum = one + two;
+return sum;
+}
+
+static void Caller(void)
+{
+int num = 10;
+num = Add(num, 45);
+num = 100;
+}
+
+
+struct fraction {
+int numerator;
+int denominator;
+};
+static void Binky(struct fraction param)
+{
+struct fraction local;
+local.denominator = 1;
+param.denominator = 2;
+}
+
+static void Caller(void)
+{
+struct fraction actual;
+Binky(actual);
+}
+
+static void Apple(void)
+{
+int i;
+short scores[4];
+scores[i] = 10;
 }
