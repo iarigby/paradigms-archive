@@ -1,33 +1,0 @@
-Script started on 2019-09-16 21:19:17+04:00 [TERM="xterm-kitty" TTY="/dev/pts/1" COLUMNS="100" LINES="26"]
-[1m[7m%[27m[1m[0m                                                                                                    ]2;ia@asus-endeavour: ~/freeuni/paradigms/linux-examples/notations]1;..les/notations[0m[27m[24m[J> [K[30C~/freeuni/paradigms/linux-examples/notations(dev[33m✗[00m)@asus-endeavour[97D[?1h[?2004hlls[?1l[?2004l
-]2;ls -a]1;ls.  ..  a.c  ab.c  bb.c	cbb.c  commands
-[1m[7m%[27m[1m[0m                                                                                                    ]2;ia@asus-endeavour: ~/freeuni/paradigms/linux-examples/notations]1;..les/notations[0m[27m[24m[J> [K[30C~/freeuni/paradigms/linux-examples/notations(dev[33m✗[00m)@asus-endeavour[97D[?1h[?2004hmman man[?1l[?2004l
-]2;man man]1;man[?1049h[?1hMAN(1)                                  Manual pager utils                                 MAN(1)[m
-[m
-[1mNAME[0m[m
-       man - an interface to the on-line reference manuals[m
-[m
-[1mSYNOPSIS[0m[m
-       [1mman[0m  [[1m-C[0m  [4mfile[24m]  [[1m-d[0m]  [[1m-D[0m]  [[1m--warnings[0m[=[4mwarnings[24m]]  [[1m-R[0m  [4mencoding[24m]  [[1m-L[0m [4mlocale[24m] [[1m-m[0m [4msys-[24m[m
-       [4mtem[24m[,...]] [[1m-M[0m [4mpath[24m] [[1m-S[0m [4mlist[24m] [[1m-e[0m [4mextension[24m] [[1m-i[0m|[1m-I[0m] [[1m--regex[0m|[1m--wildcard[0m]  [[1m--names-only[0m][m
-       [[1m-a[0m]  [[1m-u[0m]  [[1m--no-subpages[0m]  [[1m-P[0m  [4mpager[24m] [[1m-r[0m [4mprompt[24m] [[1m-7[0m] [[1m-E[0m [4mencoding[24m] [[1m--no-hyphenation[0m][m
-       [[1m--no-justification[0m] [[1m-p[0m [4mstring[24m] [[1m-t[0m] [[1m-T[0m[[4mdevice[24m]] [[1m-H[0m[[4mbrowser[24m]] [[1m-X[0m[[4mdpi[24m]] [[1m-Z[0m] [[[4msection[24m][m
-       [4mpage[24m[.[4msection[24m] ...] ...[m
-       [1mman[0m [1m-k[0m [[4mapropos[24m [4moptions[24m] [4mregexp[24m ...[m
-       [1mman[0m [1m-K[0m [[1m-w[0m|[1m-W[0m] [[1m-S[0m [4mlist[24m] [[1m-i[0m|[1m-I[0m] [[1m--regex[0m] [[4msection[24m] [4mterm[24m ...[m
-       [1mman[0m [1m-f[0m [[4mwhatis[24m [4moptions[24m] [4mpage[24m ...[m
-       [1mman[0m  [1m-l[0m  [[1m-C[0m  [4mfile[24m] [[1m-d[0m] [[1m-D[0m] [[1m--warnings[0m[=[4mwarnings[24m]] [[1m-R[0m [4mencoding[24m] [[1m-L[0m [4mlocale[24m] [[1m-P[0m [4mpager[24m][m
-       [[1m-r[0m [4mprompt[24m] [[1m-7[0m] [[1m-E[0m [4mencoding[24m] [[1m-p[0m [4mstring[24m] [[1m-t[0m] [[1m-T[0m[[4mdevice[24m]] [[1m-H[0m[[4mbrowser[24m]] [[1m-X[0m[[4mdpi[24m]]  [[1m-Z[0m][m
-       [4mfile[24m ...[m
-       [1mman[0m [1m-w[0m|[1m-W[0m [[1m-C[0m [4mfile[24m] [[1m-d[0m] [[1m-D[0m] [4mpage[24m ...[m
-       [1mman[0m [1m-c[0m [[1m-C[0m [4mfile[24m] [[1m-d[0m] [[1m-D[0m] [4mpage[24m ...[m
-       [1mman[0m [[1m-?V[0m][m
-[m
-[1mDESCRIPTION[0m[m
-       [1mman[0m is the system's manual pager.  Each [4mpage[24m argument given to [1mman[0m is normally the name of[m
-       a program, utility or function.  The [4mmanual[24m [4mpage[24m associated with each of  these  arguments[m
-       is then found and displayed.  A [4msection[24m, if provided, will direct [1mman[0m to look only in that[m
-[7m Manual page man(1) line 1 (press h for help or q to quit)[27m[K[K       [4msection[24m of the manual.  The default action is to search in all of the  available  [4msections[24m[m
-[7m Manual page man(1) line 2 (press h for help or q to quit)[27m[K[K[7m Manual page man(1) line 2 (press h for help or q to quit)[27m[K[K[?1l[?1049l[1m[7m%[27m[1m[0m                                                                                                    ]2;ia@asus-endeavour: ~/freeuni/paradigms/linux-examples/notations]1;..les/notations[0m[27m[24m[J> [K[30C~/freeuni/paradigms/linux-examples/notations(dev[33m✗[00m)@asus-endeavour[97D[?1h[?2004heexit[?1l[?2004l
-]2;exit]1;exit
-Script done on 2019-09-16 21:19:26+04:00 [COMMAND_EXIT_CODE="0"]

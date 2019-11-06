@@ -70,13 +70,36 @@ sum = one + two;
 return sum;
 }
 
+/**
+SP = SP - 8
+R1 = M[SP + 12]
+R2 = M[SP + 16]
+R3 = R1 + R2
+M[SP] = R3
+RV = M[SP] 
+SP = SP + 8
+RET
+ */
 static void Caller(void)
 {
 int num = 10;
 num = Add(num, 45);
 num = 100;
 }
-
+/*
+ SP = SP -4
+ M[SP] = 10
+ R1 = M[SP]
+ SP = SP - 8
+ M[SP + 4] = 45
+ M[SP] = R1 
+ CALL <Add>
+ SP = SP + 8
+ M[SP] = RV
+ M[SP] = 100
+ SP = SP + 4
+ RET
+ */
 
 struct fraction {
 int numerator;
@@ -88,7 +111,25 @@ struct fraction local;
 local.denominator = 1;
 param.denominator = 2;
 }
+/**
+SP = SP - 8
+M[SP + 4] = 1
+M[SP + 16] = 2
+SP = SP + 8
+RET
 
+----
+SP = SP - 8
+R1 = M[SP]
+R2 = M[SP + 4]
+SP = SP - 8
+M[SP + 4] = R2
+M[SP] = R1
+CALL <Binky>
+SP = SP + 8
+SP = SP + 8
+RET
+ */
 static void Caller(void)
 {
 struct fraction actual;
