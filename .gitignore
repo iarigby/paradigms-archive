@@ -8,6 +8,9 @@ tmp/
 problem_ideas/
 setup.org
 inbox.org
+orgopts.org
+# maybe *.org?
+README.org
 .gitmodules
 # hope this won't casue problems :P
 
