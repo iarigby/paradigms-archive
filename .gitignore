@@ -14,4 +14,5 @@ inbox.org
 # temp (in progress)
 seminars/
 homework/
-./Makefile
+!homework/README.md
+Makefile
