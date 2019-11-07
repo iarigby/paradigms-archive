@@ -8,7 +8,8 @@ tmp/
 problem_ideas/
 setup.org
 inbox.org
-.gitmodules # hope this won't casue problems :P
+.gitmodules
+# hope this won't casue problems :P
 
 # temp (in progress)
 seminars/

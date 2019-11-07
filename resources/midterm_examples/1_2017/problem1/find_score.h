@@ -1,0 +1,1 @@
+int find_score(void * memory, int n, char * name);
