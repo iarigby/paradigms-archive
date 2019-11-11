@@ -9,6 +9,8 @@
 | 16     | assembly                         |                 |
 | 17     | assignment 3                     |                 |
 | 18     | generic programming              |                 |
-| 19     | (ამ შუალედურისთვის არ გჭირდებათ) | raw memory      |
+| 19     |  | raw memory      |
 | 20     | assembly                         |                 |
 | 21     | assembly, generic programming    | midterm example |
+
+მე-19 გაარჩიეთ დრო თუ დაგრჩათ სხვა ყველაფრის მერე
