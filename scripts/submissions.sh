@@ -120,7 +120,7 @@ function count() {
     # assn 1 for each test, 3 version checks + 1 memory check
     # kewyord="SUCCESSED"
     # assn 4
-    keyword="SUCCESSFULLY"
+    keyword="SUCCESSFULY"
     cat $1 | grep $keyword | wc -l
 }
 
@@ -129,7 +129,7 @@ function check() {
     submission=$1
     echo "checking $submission"
     cd $checking_dir/$submission
-    /bin/rm -f results*
+    /bin/rm -f results* > /dev/null
     ./assn-4-checker-64 ./$target >> results
    ./assn-4-checker-64 ./$target -m  >> results_extra
     results_base=$(count results)
@@ -215,7 +215,8 @@ function evaluate_all() {
     for submission in "${submissions[@]}"
     do
         cd $checking_dir
-        cat $submission/results_final.txt >> final.txt
+        result=$submission/results_final.txt
+        [[ -f $result ]] && cat $result >> final.txt
     done
 }
 
@@ -259,7 +260,7 @@ function load() {
 
 function cleanup() {
     cd $base
-    rm -rf $submission_dir $status_dir logs $checking_dir current
+    rm -rf $submissiondir $failed_dir $status_dir logs $checking_dir current
 }
 function all() {
     load
