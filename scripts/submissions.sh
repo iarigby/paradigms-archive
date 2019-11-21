@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
 
-base=~/checked3
+base=~/checking/current # use ln -s
 submissiondir=$base/submissions
 checking_dir=$base/checking
-zip_location=$base/zips
+zip_location=$base/zips # it was zip for assn1 I think
+failed_dir=$base/failed
+assignment=$base/assn-files
+data=$assignment/data
+# assn 1
+# main_file=rsg.cc
+# target=rsg
+# assn 4
+target=rss-news-search
+main_file=$target.c
 
 function getSubmissionZips() {
-    ls -1v $zip_location/???????.zip
+    ls -1v $zip_location/*.zip
 }
 
 function move() {
+
     echo basename $(pwd): moving files from $1
     cp -r $1/* .
     rm -r $1
@@ -44,7 +54,6 @@ function clean() {
         fi
 }
 
-main_file=rsg.cc
 function cleanup() {
     for submission in "${submissions[@]}"
     do
@@ -83,10 +92,11 @@ function unzip_one() {
 submissions=($(getSubmissionZips | xargs -I {} basename {} .zip))
 echo $submissions
 function unzip_all() {
-    if [[ -d $submissiondir ]]
-    then
-        echo "skipping unzip"
-    else
+#    if [[ -d $submissiondir ]]
+#    then
+#        # this should change what if I added just one zip
+#        echo "skipping unzip"
+#    else
         mkdir $submissiondir
         echo "starting unzip.."
         for submission in "${submissions[@]}"
@@ -96,29 +106,46 @@ function unzip_all() {
             then
                 echo "$submission: skipped"
             else
-                log "unzipping $submission"
+                log "unzipping $submission to $output"
                 unzip_one $submission $output
                 update_status $submission "unzipped"
             fi
         done
         echo "all submissions unzipped"
-    fi
+#    fi
 
 }
 
-
-
-assignment=~/assn-1-rsg
-data=~/data
 function count() {
-    # for each test, 3 version checks + 1 memory check
-    cat $1 | grep "SUCCESSED" | wc -l
+    # assn 1 for each test, 3 version checks + 1 memory check
+    # kewyord="SUCCESSED"
+    # assn 4
+    keyword="SUCCESSFULLY"
+    cat $1 | grep $keyword | wc -l
 }
+
+# assignment 4
 function check() {
     submission=$1
     echo "checking $submission"
     cd $checking_dir/$submission
-    rm -f results results_extra results.txt results_extra.txt
+    /bin/rm -f results*
+    ./assn-4-checker-64 ./$target >> results
+   ./assn-4-checker-64 ./$target -m  >> results_extra
+    results_base=$(count results)
+    results_extra=$(count results_extra)
+    final="$submission,$results_base,$results_extra"
+    update_status $submission $final
+    echo $final >> results_final.txt
+    mv results_extra results_extra.txt
+    mv results results.txt # can check if finalized using this
+}
+
+function check_assignment_1() {
+    submission=$1
+    echo "checking $submission"
+    cd $checking_dir/$submission
+    /bin/rm -f results results_extra results.txt results_extra.txt
     checkers=($(/bin/ls -1v data))
     base_checkers=(excuse.g bond.g trek.g poem.g)
     for checker in "${checkers[@]}"
@@ -151,7 +178,7 @@ function initialize() {
     git add . && git commit -m "initial commit" > /dev/null
     # bin because otherwise it won't overwrite
     /bin/cp -rf $submissiondir/$submission/* .
-    cp -r $data .
+    # cp -r $data . # needed for assignment 1
     make > compile-logs.txt 2> compile-errors.txt && update_status $submission "built" &
 }
 # [[ -s $i/compile-errors.txt ]] && echo "$i: error" || echo "$i: no error"
@@ -175,11 +202,11 @@ function check_all() {
     for submission in "${submissions[@]}"
     do
         cd $checking_dir
-        if [[ -f $submission/rsg ]]
+        if [[ -f $submission/$target ]]
         then
             [[ -f $submission/results.txt ]] && echo "$submission: already checked" || check $submission
         else
-            mv $submission ~/failed/ &
+            mv $submission $failed_dir &
         fi
     done
 }
@@ -229,11 +256,17 @@ function update_status() {
 function load() {
     source ~/scripts/submissions
 }
+
+function cleanup() {
+    cd $base
+    rm -rf $submission_dir $status_dir logs $checking_dir current
+}
 function all() {
+    load
     create_status_files
     $terminal watch -t check_status $base $status_dir &
     unzip_all
-    cleanup
+    # cleanup
     init
     check_all
     evaluate_all
