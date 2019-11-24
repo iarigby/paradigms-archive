@@ -1,33 +1,50 @@
 #!/usr/bin/env bash
 
 base=~/checking/current # use ln -s
-submissiondir=$base/submissions
-checking_dir=$base/checking
-zip_location=$base/zips # it was zip for assn1 I think
-failed_dir=$base/failed
-assignment=$base/assn-files
-data=$assignment/data
-# assn 1
-# main_file=rsg.cc
-# target=rsg
-# assn 4
-target=rss-news-search
-main_file=$target.c
 
+static_dir=$base
+instance_dir=$base/instance
+
+assignment=$static_dir/assn-files
+data=$assignment/data
+zip_location=$static_dir/zips # it was zip for assn1 I think
+
+checking_dir=$instance_dir/checking
+submissiondir=$instance_dir/submissions
+failed_dir=$instance_dir/failed
+status_dir=$instance_dir/status
+current_status=$instance_dir/current
+logs_file=$instance_dir/logs
+
+source $static_dir/assn-info.sh
+# assn 1
+
+
+terminal=kitty
+function main() {
+    load
+    create_status_files
+    open_cp
+    unzip_all
+    clean_all
+    init
+    check_all
+    evaluate_all
+}
 function getSubmissionZips() {
     ls -1v $zip_location/*.zip
 }
 
-function move() {
+submissions=($(getSubmissionZips | xargs -I {} basename {} .zip))
+echo $submissions
 
-    echo basename $(pwd): moving files from $1
+function move() {
+    log basename $(pwd): moving files from $1
     cp -r $1/* .
     rm -r $1
 }
 
 # not improving this since won't be necessary with proper submissions
-assn_name=ass1
-assn_alt=assn-1-rsg
 function clean() {
     submission=$1
     file=$(ls $main_file)
@@ -41,8 +58,9 @@ function clean() {
                 if [ -z "$file" ]
                 then
                     # new scenarios would be nested here
-                    echo $submission: no solution found
-                    echo $(ls -1v)
+                    # or just use find, jfc
+                    log $submission: no solution found
+                    log $(ls -1v)
                 else
                     move $submission
                 fi
@@ -54,16 +72,14 @@ function clean() {
         fi
 }
 
-function cleanup() {
+function clean_all() {
     for submission in "${submissions[@]}"
     do
         cd $submissiondir/$submission
         # poor logic for checking correct directory structure
         file=$(ls $main_file)
-        if [ -f "$file" ]
+        if [ ! -f "$file" ]
         then
-            log "$submission already cleaned"
-        else
             while [ -z "$file" ]
             do
                 log "cleaning $submission"
@@ -72,6 +88,7 @@ function cleanup() {
                 # and no while loop
                 file=$(ls $main_file)
             done
+            echo "$submission required cleaning" > $static_dir/problems
         fi
         update_status $submission "cleaned"
     done
@@ -79,9 +96,10 @@ function cleanup() {
 
 function log() {
     msg="$1"
-    echo "\t\t\t$msg" | tee $base/current
-    echo $msg >> logs
+    echo "\t\t\t$msg" | tee $current_status
+    echo $msg >> $logs_file
 }
+
 function unzip_one() {
     submission=$1
     output=$2
@@ -89,22 +107,20 @@ function unzip_one() {
     unzip -q $zip_location/$submission.zip -d $output
 }
 
-submissions=($(getSubmissionZips | xargs -I {} basename {} .zip))
-echo $submissions
 function unzip_all() {
 #    if [[ -d $submissiondir ]]
 #    then
 #        # this should change what if I added just one zip
-#        echo "skipping unzip"
+#        log "skipping unzip"
 #    else
         mkdir $submissiondir
-        echo "starting unzip.."
+        log "starting unzip.."
         for submission in "${submissions[@]}"
         do
             output=$submissiondir/$submission
             if [ -d $output ]
             then
-                echo "$submission: skipped"
+                log "$submission: skipped"
             else
                 log "unzipping $submission to $output"
                 unzip_one $submission $output
@@ -125,45 +141,7 @@ function count() {
 }
 
 # assignment 4
-function check() {
-    submission=$1
-    echo "checking $submission"
-    cd $checking_dir/$submission
-    /bin/rm -f results* > /dev/null
-    ./assn-4-checker-64 ./$target >> results
-   ./assn-4-checker-64 ./$target -m  >> results_extra
-    results_base=$(count results)
-    results_extra=$(count results_extra)
-    final="$submission,$results_base,$results_extra"
-    update_status $submission $final
-    echo $final >> results_final.txt
-    mv results_extra results_extra.txt
-    mv results results.txt # can check if finalized using this
-}
 
-function check_assignment_1() {
-    submission=$1
-    echo "checking $submission"
-    cd $checking_dir/$submission
-    /bin/rm -f results results_extra results.txt results_extra.txt
-    checkers=($(/bin/ls -1v data))
-    base_checkers=(excuse.g bond.g trek.g poem.g)
-    for checker in "${checkers[@]}"
-    do
-        echo -n "\t$checker: "
-        results=results_extra
-        case "${base_checkers[@]}" in *$checker*) results=results ;; esac
-        echo "\n*****$checker*****\n" >> $results
-        ./rsgChecker ./rsg ./data/$checker >> $results
-        echo "done"
-    done
-    update_status $submission "checked"
-    results_base=$(count results)
-    results_extra=$(count results_extra)
-    echo "$submission,$results_base,$results_extra" >> results_final.txt
-    mv results_extra results_extra.txt
-    mv results results.txt # can check if finalized using this
-}
 
 function initialize() {
     submission=$1
@@ -190,7 +168,7 @@ function init() {
     do
         if [ -f $checking_dir/$submission/compile-logs.txt ]
         then
-            echo "$submission: already built"
+            log "$submission: already built"
         else
             log "building $submission"
             initialize $submission
@@ -204,9 +182,10 @@ function check_all() {
         cd $checking_dir
         if [[ -f $submission/$target ]]
         then
-            [[ -f $submission/results.txt ]] && echo "$submission: already checked" || check $submission
+            [[ -f $submission/results.txt ]] && log "$submission: already checked" || check $submission
         else
-            mv $submission $failed_dir &
+            echo "$submission,failed,failed" >> $submission/results_final.txt
+            update_status $submission "failed"
         fi
     done
 }
@@ -216,7 +195,7 @@ function evaluate_all() {
     do
         cd $checking_dir
         result=$submission/results_final.txt
-        [[ -f $result ]] && cat $result >> final.txt
+        [[ -f $result ]] && cat $result >> $static_dir/final.txt
     done
 }
 
@@ -230,11 +209,9 @@ function view_submission() {
 function view() {
     emacsclient -c -e "(load-file \"$emacs_view_command_file\")"
 }
-status_dir=$base/status
 function status() {
-    cat $base/status_header $status_dir/* | less
+    cat $statid_dir/status_header $status_dir/* | less
 }
-terminal=kitty
 
 function create_status_files() {
     mkdir -p $status_dir
@@ -247,11 +224,16 @@ function create_status_files() {
 
 function update_status() {
     submission=$1
+    message=$2
+    msg="$submission: $message"
     file=$status_dir/$submission
-    echo -n $(tr -d '\n' < $file) > $file
-    msg="$submission: $2"
+    already_logged=$(grep $message $file)
+    if [ -z "$already_logged" ]
+    then
+        echo -n $(tr -d '\n' < $file) > $file
+        echo "\t$message" >> $file
+    fi
     log $msg
-    echo "\t$2" >> $file
 }
 
 function load() {
@@ -259,16 +241,10 @@ function load() {
 }
 
 function cleanup() {
-    cd $base
-    rm -rf $submissiondir $failed_dir $status_dir logs $checking_dir current
+    rm -rf $instance_dir
 }
-function all() {
-    load
-    create_status_files
-    $terminal watch -t check_status $base $status_dir &
-    unzip_all
-    # cleanup
-    init
-    check_all
-    evaluate_all
+
+function open_cp() {
+    $terminal watch -t check_status $static_dir $status_dir &
 }
+
