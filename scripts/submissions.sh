@@ -37,7 +37,6 @@ function getSubmissionZips() {
 
 submissions=($(getSubmissionZips | xargs -I {} basename {} .zip))
 echo $submissions
-
 function move() {
     log basename $(pwd): moving files from $1
     cp -r $1/* .
@@ -102,7 +101,12 @@ function log() {
 
 function unzip_one() {
     submission=$1
-    output=$2
+    if [ -z "$2" ]
+    then
+       output=$1
+    else
+        output=$2
+    fi
     mkdir $output
     unzip -q $zip_location/$submission.zip -d $output
 }
@@ -245,6 +249,16 @@ function cleanup() {
 }
 
 function open_cp() {
-    $terminal watch -t check_status $static_dir $status_dir &
+    $terminal watch -t get_status $static_dir $status_dir &
 }
 
+function get_errors() {
+    for file in $(/bin/ls $dir)
+    do
+        if [ ! -z "$(cat $dir/$file/compile-errors.txt)" ]
+        then
+            echo "\n\n\n\n$file"
+            cat $dir/$file/compile-errors.txt
+        fi
+    done
+}
