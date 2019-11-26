@@ -30,16 +30,18 @@ void * Philospher(void * data) {
 	dataT * d = (dataT *)data;
 	while (1) {
 		Think(d->id);
+		sem_t* left = d->locks + d->id;
+		sem_t* right = d->locks + (d->id + 1)%PHIL_NUM;
 		if (d->id < (d->id + 1)%PHIL_NUM) {
-			sem_wait(d->locks + d->id);
-			sem_wait(d->locks + (d->id + 1)%PHIL_NUM);
+			sem_wait(left);
+			sem_wait(right);
 		} else {
-			sem_wait(d->locks + (d->id + 1)%PHIL_NUM);
-			sem_wait(d->locks + d->id);
+			sem_wait(right);
+			sem_wait(left);
 		}
 		Eat(d->id);
-		sem_post(d->locks + d->id);
-		sem_post(d->locks + (d->id + 1)%PHIL_NUM);
+		sem_post(left);
+		sem_post(right);
 	}
 }
 
