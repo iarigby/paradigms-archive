@@ -1,0 +1,53 @@
+#+INCLUDE: ~/freeuni/paradigms/orgopts.org
+* მესამე სემინარი
+** განხილული მასალები + დავალებები
+*** [[file:../1-2/][წინა კვირის]] ჰენდაუთების გამეორება
+რადგანაც ძირითადად არ გქონდათ წაკითხული, თავიდან წაიკითხეთ.
+**** კომპიუტერის არქიტექტურა
+თავიდან უპასუხეთ ამ კითხვებს. pdf-ში მნიშვნელოვანი ნაწილები გახაზულია.
+#+INCLUDE: ../handouts/06-Computer-Architecture.txt
+**** დეველოპმენტი ლინუქსზე
+README-ში წერია რომელი გვერდები გჭირდებათ. შემდეგ
+სემინარზე დავსვამ კითხვებს.
+*** [[file:../transcripts/Lecture03.pdf][ლექცია]]
+**** მისამართები
+- რა ტიპის ცვლადით ვინახავთ მისამართებს?
+- რა განსხვავებაა int-სა და პოინტერს შორის?
+- როგორ განისაზღვრება სტრაქტის მისამართი? ისევე, როგორც?
+**** ენდიანები
+- როგორი ენდიანები არსებობს და რა განსხვავებაა მათ შორის?
+- რომელს იყენებს პროცესორების უმრავლესობა?
+- შენიშვნა: ენდიანები ამ საგანში დაგჭირდებათ, გირჩევთ დამატებითი მასალა ნახოთ
+  (გვერდის ბოლოს)
+**** pointer arithmetic
+- როგორ აღიქვამს კომპაილერი პოინტერისთვის რიცხვის დამატებას?
+- როგორაა მოწყობილი მეხსიერება ფუნქციის შიგნით?
+*** ჰენდაუთი [[file:../handouts/07-Arrays-The-Full-Story.pdf][arrays]]
+თავიდან ბოლომდე კარგად წაიკითხეთ. გამეორებაში ჰაილაითები დაგეხმარებათ და გარდა
+მაგისა, ახალი მასალაც არის.
+კოდის ფრაგმენტები თავიდან დაწერეთ და გაუშვით, printf-ით ნახეთ რა
+მნიშვნელობებს იღებენ ცვლადები. შეეცადეთ კოდი შეცვალოთ და დამატებითი სცენარებიც მოიფიქროთ.
+*** ამოცანა struct-ებზე
+დახატეთ, რა ხდება თითოეულ ხაზზე და შეამოწმეთ. [[file:../handouts/memory.pdf][memory/struct]]
+** დამატებითი
+*** მეხსიერება
+**** სტენფორდის ლექტორის გაკეთებული [[http://cslibrary.stanford.edu/102/PointersAndMemory.pdf][pdf]]
+ამ 20-30 გვერდში არის მეხსიერების, პოინტერების და მათთან დაკავშირებული
+საკითხების **ყველაზე კარგი** ახსნა, რაც წამიკითხავს. პირველი და მეორე სექციის
+(მე-17 გვერდამდე) წაკითხვა მომავალში უამრავ დროს დაგიზოგავთ.
+**** სტეკი და ჰიპი FAQ
+[[https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap][What and where are the stack and heap?]]
+*** პოინტერები
+https://www.youtube.com/watch?v=t5NszbIerYc ამ ვიდეოში რასაც ახსენებს ბრეილსფორდი,
+შემდეგი სემინარის სავარჯიშოში დაგეხმარებათ
+*** ენდიანები
+**** [[https://softwareengineering.stackexchange.com/questions/95556/what-is-the-advantage-of-little-endian-format/95854][What is the advantage of little endian format?]]
+
+In a little endian system, the address of a given value in memory, taken as a
+ 32, 16, or 8 bit width, is the same.
+taking that '16' as a 16-bit value (c 'short' on most 32-bit systems) or as an
+ 8-bit value (generally c 'char') changes only the fetch instruction you use —
+ not the address you fetch from.
+ in short, ‘on little endian systems, casts are a *no-op*.’
+**** [[https://softwareengineering.stackexchange.com/a/223960][ვიზუალური მაგალითი]]
+**** [[https://www.youtube.com/watch?v=NcaiHcBvDR4][ვიდეო]]

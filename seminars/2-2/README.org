@@ -1,0 +1,60 @@
+#+INCLUDE: ../orgopts.org
+
+* მეოთხე სემინარი
+** მაგალითები პოინტერებზე
+*** გამეორება: dynamic arrays
+კითხვები წინა კვირის ბოლო ორი გვერდიდან
+** ამოცანები ბიტებზე
+[[file:../classwork/datalab-handout][datalab]] ფაილები
+*** შენიშვნა: პროგრამის ამუშავება
+პროგრამას ჭირდება ბიბლიოთეკა, რომელიც თქვენს სისტემაზე შეიძლება დაყენებული არ
+იყოს
+#+BEGIN_SRC sh
+sudo apt install libc6-dev-i386
+#+END_SRC
+*** ნებადართული გამოსახულებები (ტოლობის მარჯვენა მხარეს)
+1. 0-დან 255 ჩათვლით რიცხვები (0xFF)
+2. ფუნქციის არგუმენტები და ლოკალური ცვლადები
+3. c ოპერატორები
+*** c ოპერატორები
+   [[https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/][ამ ლინკზე]] არის მათი დეტალური აღწერა მაგალითებით
+***** !/~ logical/bitwise not
+***** & bitwise and
+***** ^ bitwise xor
+***** | bitwise or
+***** + unary plus
+***** <<, >> arithmetic (signed) bitwise shift
+[[https://stackoverflow.com/questions/141525/what-are-bitwise-shift-bit-shift-operators-and-how-do-they-work][მეტი ინფო]]
+6 << 1 = 12 (00000110 -> 00001100)
+
+You might also note that shifting left is equivalent to multiplication by powers
+of 2. So 6 << 1 is equivalent to 6 * 2, and 6 << 3 is equivalent to 6 * 8
+
+The arithmetic right shift is exactly like the logical right shift, except
+instead of padding with zero, it pads with the most significant bit. This is
+because the most significant bit is the sign bit, or the bit that distinguishes
+positive and negative numbers. By padding with the most significant bit, the
+arithmetic right shift is sign-preserving.
+*** make ბრძანებები
+#+BEGIN_SRC sh
+make # საჭიროა დასაწყსიში და კოდის ყოველი ცვლილების შემდეგ
+./btest # (სიას წერს თითოეული ფუნქცია როგორ აკმაყოფილებს პირობებს
+# ბოლოს წერს 41-დან რამდენი სცენარი (ერთ ფუნქციას რამდენიმე ტესტი აქვს) ჩააბარეთ წარმატებით
+#+END_SRC
+დამხმარე პროგრამები
+- ishow: შეყვანილი რიცხვების hex, signed, unsigned მნიშვნელობა
+- fshow: შეყვანილი floating pointის სხვადასხვა სახის მნიშვნელობა
+*** დავალება: თავიდან ამოხსნა და ბოლომდე დამთავრება
+სრული ამოხსნები აიტვირთება <when?>
+** გამეორება: კომპაილერი და იუნიქსი
+*** linux, gcc
+#+INCLUDE: ../handouts/08-Unix-Development.txt
+*** make (დავალების Makefile გარჩევა)
+- რა მოხდება, თუ PROGS -ში დავამატებთ სხვა თარგეთს, მაგალითად abc
+- რა ბრძანებებს განახორციელებს make პირველ გაშვებაზე? ფაილის შეცვლაზე? ფაილის
+  შეუცვლელად?
+- შევცვალე ფაილი production.cc. რომელი ბრძანებები გაეშვება თავიდან?
+- დაკომპაილდება თუ არა ავტომატურად ახალი ფაილი?
+- როგორ დავამატოთ ახალი ფაილი ამ პროექტში?
+** assignment 1
+დავალებაში დაგჭირდებათ std::map-ის გამოყენება, რომელიც არის [[file:../handouts/03-Introducing-The-STL.pdf][ჰენდაუთში]]

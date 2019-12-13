@@ -1,0 +1,88 @@
+#+INCLUDE: ../orgopts.org
+
+* მეხუთე სემინარი
+** მეორე დავალება
+არის ასევე c++-ში და შეგიძლიათ მომზადება ახლავე დაიწყოთ. წაიკითხეთ დავალების პირობა, FAQ,
+ნახეთ ფაილები.
+*** TODO დაპოსტვა ქლასრუმზე და ლინკის ჩართვა
+** 10-Section-Handout
+*** Meet the Flintstones
+*** Scheme
+**** დამატებით: რატომაა სიები მნიშვნელოვანი
+"მხოლოდ ერთი სტრუქტურის იმპლემენტაცია თუ შეგიძლია ენაში, სია უნდა იყოს"
+- სხვა სტრუქტურების დიდი ნაწილი უბრალოდ სპეციფიური სიაა (stack, queue)
+- ფუნქციაც კი შეიძლება სიად ჩაიწეროს (პირველი ელემენტი სახელი, დანარჩენი
+  არგუმენტები). ამ კურსში გავივლით ამის ნამდვილ მაგალითს
+- იდეალურია რეკურსიისთვის (სია სიაში), რისი მეშვეობითაც ფაქტიურად ყველაფრის
+  გამოსახვაა შესაძლებელი (ორობითი ხე).
+
+შენიშვნა: ამ ფაილში ხელით წერია საჭირო ფაილების სია, მაგრამ როგორც წესი, srcs სია იქმენება ბეშის ბრძანებით, რომლითაც დირექტორიაში
+(და ქვედირექტორიებში) ყველა .cc დაბოლოებული ფაილი იძებნება
+**** *ConcatAll
+***** ფუნქციის აღწერის შექმნა
+***** დეტალების დაზუსტება
+****** nodeType
+როგორია ენუმერაციებიდან თითოეულის სტრუქტურა, ტიპი, როგორ წავიკითხოთ
+- int: int
+- str: const char*, ((char *)(list +1))[0]
+- list: [nodeType**, nodeType**], (nodeType**)(list + 1)
+
+
+- როგორ წავიკითხოთ list-ის პირველი/მეორე ელემენტი? - ((nodeType**)(list+1))[0] / [1]
+
+შენიშვნა: აქ დაწერილი გამოსახულებები კოდში უფრო სუფთად დაწერეთ. ოპერაციები
+დაყავით და ნაბიჯ-ნაბიჯ გააკეთეთ (ჯერ list-ის წაკითხვა, შემდეგ მისი ელემენტების)
+***** დავალება: ფუნქციის დაწერა
+შემდეგ ნაწილში მოცემულია სხვადასხვა ფუნქციები და ცნებები, რომელიც ამოხსნაში
+გამოგადგებათ. ამოხსნას გავარჩევთ შემდეგ სემინარზე.
+** c
+*** TODO switch statements
+break, return, skipის ახსნა
+*** რეკურსია
+მაგალითი: მაქსიმუმის პოვნა ორობით ხეში, თუ მოცემული გვაქვს ფუნქცია max
+#+BEGIN_SRC c
+struct {
+  Integer element;
+  Node left;
+  Node right;
+} Node;
+
+int maxElem(Node node) {
+  int max = node.element;
+  if(node.left != null) {
+    max = max(max, maxElem(node.left));
+  }
+  if(node.right != null) {
+    max = max(max, maxElem(node.right));
+  }
+  return max;
+}
+#+END_SRC
+
+შენიშვნა: სავარჯიშოში null შემოწმებები არაა საჭირო
+*** double pointers
+#+BEGIN_SRC c
+int s=2,*r=&s,**q=&r,***p=&q;
+p[0][0][0]
+#+END_SRC
+*** string-თან მუშაობა
+დავწეროთ ფუნქცია, რომელიც ორ სთრინგს ერთმანეთს გადააბამს მეხსიერების ახალ ნაწილში
+**** strcat
+ამოხსნაში გამოყენებული ფუნქციის ფორმალური აღწერა
+#+BEGIN_SRC
+Appends a copy of the source string to the destination string. The terminating null character in destination is overwritten by the first character of source, and a null-character is included at the end of the new string formed by the concatenation of both in destination.
+#+END_SRC
+**** კითხვები
+- რა რაოდენობის მეხსიერება გვჭირდება?
+- რა განსხვავებაა strcat(first, second)-სა და ამ ფუნქციას შორის? ჩვენს
+  'უსაფრთხო' ასლს ვაკეთებთ, და ორიგინალის წაშლის შემთხვევაში მაინც დაგვრჩება
+**** ამოხსნა
+#+BEGIN_SRC c
+char* ConcatSrings(const char* first, const char* second)
+  char* result = malloc(strlen(first) + strlen(second) + 1);
+  strcpy(result, first);
+  strcat(result, second);
+  return result;
+}
+#+END_SRC
+*** TODO write down process description

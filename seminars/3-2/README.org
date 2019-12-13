@@ -1,0 +1,135 @@
+#+INCLUDE: ../orgopts.org
+
+* მეექვსე სემინარი
+** კითხვები ლექციიდან: დესტრუქტორები
+- რა მთავარ მიზანს ემსახურება დესტრუქტორი? -> რეკურსიულად სტრუქტურის თითოეული
+  წევრის მეხსიერების გათავისუფლება. ნიშნავს რომ ყველა თავის სტრუქტურაზეა მხოლოდ პასუხისმგებელი
+- როგორ შეგვიძლია გამოვიძახოთ( c++ )? -> ~class(). მაგრამ ეს არასდროს გააკეთოთ (იშვიათი
+  შემთხვევაა, როცა იმუშავებს), რადგან scope-დან გასვლისას ავტომატურად
+  გამოიძახებს კომპაილერი, იმ შემთხვევაშიც კი, თუ მეორედ გამოიძახებს.
+- რა გარანტიები გვაქვს, რომ ეს პასუხისმგებლობა ნამდვილად შესრულდა? როგორ
+  შევამოწმოთ? -> არანაირი გარანტია, არანაირი გზა შემოწმების (დამატებითი
+  პროგრამების გარეშე)
+** რჩევები დავალებებისთვის და გამოცდისთვის
+*** დიდი რაოდენობის და მრავალფეროვნების ინფორმაციასთან გამკლავება და გაფილტვრა
+*** სხვა დომეინის პრობლემის ბევრი კონტექსტის გარეშე გაგება
+სასურველია, რომ სიღრმისეულად გესმოდეს საკითხი, მაგრამ ხშირად იქნება აუცილებელი
+რომ ზედაპირულად გაერკვე. ამ საგანში უამრავი ახალი თემაა, რომელსაც მეტად
+სიღრმისეულად ცალკე საგნები დაეთმობა, მაგრამ იგულისხმება, რომ წარმოდგენა უნდა
+შეგექმნათ კოდის წერის და პროგრამების შექმნაში რა სხვადასხვა პროცესები იღებს მონაწილეობას
+*** პრობლემისა და იმპლემენტაციის ერთმანეთისგან გამოყოფა
+კოდის წერამდე დაწერეთ კომენტარები, სადაც ფიქრის პროცესი იქნება აღწერილი (არა
+მარტო როგორ, არამედ *რატომ*).
+
+მეხსიერების გათავისუფლება და ა.შ. ცალკე უნდა მოგვარდეს, როცა უკვე იცი ფუნქციამ
+რა უნდა გააკეთოს და როგორ. სხვა შემთხვევაში ორ დამოუკიდებელ პრობლემაზე ერთად
+ფიქრობ და ვერცერთს აგვარებ.
+*** სტრესი/სიჩქარე ხელს უშლის კრეატიულ ფუნქციებს
+დედლაინიდან რამდენიმე დღით ადრე უკვე მორჩენილი უნდა იყოთ დავალებას. მანამდე
+ჩამოთვლილი პრობლემები იმდენად რთული გასამკლავებელია, რომ კიდევ ერთის დამატება
+დიდ ზიანს მოგაყენებთ.
+*** მთავარი ხელისშემშლელები გამოცდაზე
+- დროში შეზღუდვა
+- მეტი წონა აქვს და შანსების ნაკლები რაოდენობა
+- საკუთარი ხელსაწყოების გარეშე ყოფნა (ედიტორი, ტერმინალი)
+- არაკომფორტული კომპიუტერები
+
+ამ ყველაფრის გამო არის აუცილებელი, რომ რაც შეიძლება მეტი სავარჯიშო და დავალება
+გააკეთოთ და კომფორტულად შეგეძლოთ პრობლემებთან მუშაობა. და წინასწარ გქონდეთ
+გაანალიზებული ეს დამატებითი ფაქტორები, რომელსაც ვერ შეცვლით.
+** ამოხსნა: Scheme
+პირობა წინა სემინარზე (მეათე ჰენდაუთი)
+*** კოდი
+#+BEGIN_SRC c
+/**
+   Traverses a properly structured list, and returns the ordered
+   concatenation of all strings, including those in nested sublists.
+
+   When applied to the two lists drawn above, the following strings
+   would be returned:
+
+   ConcatAll(gameThree) would return “YankeesDiamondbacks”
+   ConcatAll(nestedNumbers) would return “onethreesix”
+,*/
+typedef enum {
+              Integer, String, List, Nil
+} nodeType;
+static char *ConcatStrings(const char *first, const char *second)
+{
+  char *result = malloc(strlen(first) + strlen(second) + 1);
+  strcpy(result, first);
+  strcat(result, second);
+  return result;
+}
+char *ConcatAll(nodeType *list)
+{
+  switch (*list) {
+  case Integer:
+  case Nil: return strdup("");
+  case String: return strdup((char *)(list + 1));
+  }
+  nodeType **lists = (nodeType **)(list + 1);
+  char *front = ConcatAll(lists[0]);
+  char *back = ConcatAll(lists[1]);
+  char *result = ConcatStrings(front, back);
+  free(front);
+  free(back);
+  return result;
+}
+#+END_SRC
+*** c
+**** switch statements
+break, return, skipის ახსნა
+**** რეკურსია
+მაგალითი: მაქსიმუმის პოვნა ორობით ხეში, თუ მოცემული გვაქვს ფუნქცია max
+#+BEGIN_SRC c
+struct {
+  Integer element;
+  Node left;
+  Node right;
+} Node;
+
+int maxElem(Node node) {
+  int max = node.element;
+  if(node.left != null) {
+    max = max(max, maxElem(node.left));
+  }
+  if(node.right != null) {
+    max = max(max, maxElem(node.right));
+  }
+  return max;
+}
+#+END_SRC
+
+შენიშვნა: სავარჯიშოში null შემოწმებები არაა საჭირო
+**** double pointers
+#+BEGIN_SRC c
+int s=2,*r=&s,**q=&r,***p=&q;
+p[0][0][0]
+#+END_SRC
+**** string-თან მუშაობა
+დავწეროთ ფუნქცია, რომელიც ორ სთრინგს ერთმანეთს გადააბამს მეხსიერების ახალ ნაწილში
+***** ფუნქციები
+ამოხსნაში გამოყენებული ფუნქციის ფორმალური აღწერა
+****** strcat
+Appends a copy of the source string to the destination string. The terminating
+null character in destination is overwritten by the first character of source,
+and a null-character is included at the end of the new string formed by the
+concatenation of both in destination.
+****** strdup
+Returns a pointer to a null-terminated byte string, which is a duplicate of the
+string pointed to by str1. The returned pointer must be passed to free to avoid
+a memory leak.
+***** კითხვები
+- რა რაოდენობის მეხსიერება გვჭირდება?
+- რა განსხვავებაა strcat(first, second)-სა და ამ ფუნქციას შორის? - ჩვენს
+  'უსაფრთხო' ასლს ვაკეთებთ, და ორიგინალის წაშლის შემთხვევაში მაინც დაგვრჩება
+***** ამოხსნა
+#+BEGIN_SRC c
+char* ConcatSrings(const char* first, const char* second)
+  char* result = malloc(strlen(first) + strlen(second) + 1);
+  strcpy(result, first);
+  strcat(result, second);
+  return result;
+}
+#+END_SRC
