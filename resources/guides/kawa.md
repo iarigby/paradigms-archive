@@ -9,7 +9,7 @@
 hello.scm
 ```scheme
 (define (hello) "hello world")
-(display (hello)
+(display (hello))
 (newline)
 ```
 
@@ -20,7 +20,8 @@ kawa hello.scm
 
 ## error handling
 ჯავას ერორ მესიჯები საკმაოდ გრძელი შეიძლება იყოს და ტერმინალში წასაკითხად
-მოუხერხებელი
+    მოუხერხებელი. Stackoverflow-ს შემთხვევაში შეიძლება ვერც დაინახოთ, იმიტომ რომ
+    scrollback სიგრძეს ცდება. ყველაზე მარტივი მოგვარება ამის
 
 ```sh
 # no space between 2 and >
